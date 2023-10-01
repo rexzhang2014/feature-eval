@@ -1,3 +1,7 @@
+
+from featureval.redrel import Redundancy, Relevance
+from featureval.metrics import abs_corr_coef
+
 class SelectionStrategy() :
     def __init__(self, data, xcols, ycols, init_set=[], rel_class=Relevance, red_class=Redundancy, metric_func=None, *args, **kwargs) :
         self.data = data
@@ -8,8 +12,6 @@ class SelectionStrategy() :
         self.rel_class = rel_class # (data, self.xcols, self.ycols, metric_func)
         self.red_class = red_class # (data, self.xcols, self.ycols, metric_func)
     
-    def verboseprint(self) :
-        
     def _run(self) : 
         pass
     
@@ -56,7 +58,15 @@ class mRMR(SelectionStrategy) :
             print(self.selected)
         
 if __name__ == '__main__' :
-    mrmr = mRMR(3, df, xcols, ycols, metric_func=abs_corr_coef)
+    import pandas as pd
+
+    df = pd.DataFrame(
+        [[1,1,1,1],[2,1,3,1],[3,1,2,1], [3,3,2,0], [2,1,3,0], [3,4,5,0]],
+        columns=['x1', 'x2', 'x3', 'y']
+    )
+    xcols = ['x1', 'x2', 'x3',]
+    ycols = ['y']
+    mrmr = mRMR(2, df, xcols, ycols, metric_func=abs_corr_coef)
     mrmr.run()
 
     
