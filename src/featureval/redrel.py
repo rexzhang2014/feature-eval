@@ -110,8 +110,10 @@ class Redundancy(MetricBase):
         pairwise = self._calc_pairwise()
         
         if isinstance(agg_method, str) :
-            agg_method = eval('np.'+agg_method)
-            
+            agg_method1 = eval('np.'+agg_method)
+            # pairwise calc, scaled.
+            agg_method = lambda x : agg_method1(x) / len(x) 
+
         fsetwise = pairwise.groupby('y')[self.name].agg(agg_method)
         
         self.redundancy = fsetwise.reset_index()

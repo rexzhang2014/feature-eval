@@ -49,9 +49,14 @@ class mRMR(SelectionStrategy) :
             red_rlt = redundancy.calculate()
             print(red_rlt)
 
-            rel_vs_red = rel_rlt.merge(red_rlt, left_on='x', right_on='y') #- red_rlt.sort_values('y') #- red_rlt
+            curr_rele_mean = rel_rlt.loc[rel_rlt['x'].isin(self.selected), relevance.name].mean()
+            cand_rele = rel_rlt[rel_rlt['x'].isin(candidates)]
+            cand_rele = cand_rele.assign(
+                cand_rele_mean = (cand_rele[relevance.name] + len(self.selected)*curr_rele_mean) / (len(self.selected)+1)
+            )
+            rel_vs_red = cand_rele.merge(red_rlt, left_on='x', right_on='y') #- red_rlt.sort_values('y') #- red_rlt
             
-            rel_vs_red['score'] = rel_vs_red[relevance.name] - rel_vs_red[redundancy.name]
+            rel_vs_red['score'] = rel_vs_red['cand_rele_mean'] - rel_vs_red[redundancy.name]
             print(rel_vs_red)
 
             best = rel_vs_red.sort_values('score', ascending=False).head(1)

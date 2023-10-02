@@ -1,6 +1,6 @@
 
 from featureval import mRMR
-from featureval.metrics import mutual_information
+from featureval.metrics import mutual_information, abs_corr_coef
 
 from featureval.preprocess import categories_to_integer, zscore_normalize
 
@@ -32,8 +32,8 @@ if __name__ == '__main__' :
     
     print(df.head())
 
-    mrmr = mRMR(10, df, xcols, ycols, metric_func=lambda x, y: mutual_information(x,y,[10,10]))
-    # mrmr = mRMR(3, df, xcols, ycols, metric_func=abs_corr_coef)
+    mrmr = mRMR(10, df, xcols, ycols, metric_func=lambda x, y: mutual_information(x,y,[20,20]))
+    mrmr = mRMR(10, df, xcols, ycols, metric_func=abs_corr_coef)
     mrmr.run()
 
     
