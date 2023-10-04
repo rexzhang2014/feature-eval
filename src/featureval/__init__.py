@@ -28,6 +28,8 @@ from featureval.selection import (
 from featureval.preprocess import(
     categories_to_integer,
     zscore_normalize,
+    detect_variable_type,
+    weight_of_evidence,
 )
 
 from featureval import (
