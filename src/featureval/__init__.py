@@ -33,6 +33,7 @@ from featureval.preprocess import(
 )
 
 from featureval import (
+    binning,
     metrics,
     preprocess,
     selection,
